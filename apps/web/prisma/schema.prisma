@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  VIEWER
+}
+
+enum LedgerNature {
+  DEBIT
+  CREDIT
+}
+
+enum VoucherType {
+  SALES
+  PURCHASE
+  RECEIPT
+  PAYMENT
+  JOURNAL
+  CONTRA
+}
+
+enum PartyType {
+  DEBTOR
+  CREDITOR
+  BOTH
+}
+
+enum BillType {
+  PAYABLE
+  RECEIVABLE
+}
+
+enum SyncStatus {
+  SUCCESS
+  PARTIAL
+  FAILED
+}
+
+model Company {
+  id               String            @id @default(cuid())
+  name             String
+  tallyCompanyName String?
+  syncToken        String            @unique @default(uuid())
+  lastSyncAt       DateTime?
+  createdAt        DateTime          @default(now())
+  users            User[]
+  syncLogs         SyncLog[]
+  ledgers          Ledger[]
+  vouchers         Voucher[]
+  parties          Party[]
+  outstandingBills OutstandingBill[]
+  stockItems       StockItem[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(VIEWER)
+  companyId    String
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@index([companyId])
+}
+
+model SyncLog {
+  id              String     @id @default(cuid())
+  companyId       String
+  company         Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  syncedAt        DateTime   @default(now())
+  status          SyncStatus
+  recordsUpserted Int        @default(0)
+  error           String?
+
+  @@index([companyId, syncedAt])
+}
+
+model Ledger {
+  id             String       @id @default(cuid())
+  companyId      String
+  company        Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  name           String
+  group          String
+  openingBalance Decimal      @default(0) @db.Decimal(18, 2)
+  closingBalance Decimal      @default(0) @db.Decimal(18, 2)
+  nature         LedgerNature
+  asOfDate       DateTime
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([companyId, name])
+  @@index([companyId, asOfDate])
+  @@index([companyId, nature])
+}
+
+model Voucher {
+  id            String      @id @default(cuid())
+  companyId     String
+  company       Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  voucherNumber String
+  date          DateTime
+  voucherType   VoucherType
+  narration     String?
+  amount        Decimal     @db.Decimal(18, 2)
+  partyName     String?
+  ledgerEntries Json        @default("[]")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([companyId, voucherNumber])
+  @@index([companyId, date])
+  @@index([companyId, voucherType, date])
+}
+
+model Party {
+  id               String            @id @default(cuid())
+  companyId        String
+  company          Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  name             String
+  group            String?
+  type             PartyType
+  openingBalance   Decimal           @default(0) @db.Decimal(18, 2)
+  closingBalance   Decimal           @default(0) @db.Decimal(18, 2)
+  creditLimit      Decimal?          @db.Decimal(18, 2)
+  creditDays       Int?
+  asOfDate         DateTime
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  outstandingBills OutstandingBill[]
+
+  @@unique([companyId, name])
+  @@index([companyId, asOfDate])
+  @@index([companyId, type])
+}
+
+model OutstandingBill {
+  id            String    @id @default(cuid())
+  companyId     String
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  partyId       String
+  party         Party     @relation(fields: [partyId], references: [id], onDelete: Cascade)
+  billNumber    String
+  billDate      DateTime
+  dueDate       DateTime?
+  amount        Decimal   @db.Decimal(18, 2)
+  pendingAmount Decimal   @db.Decimal(18, 2)
+  type          BillType
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([companyId, billNumber, type])
+  @@index([companyId, type, dueDate])
+  @@index([companyId, partyId])
+}
+
+model StockItem {
+  id         String   @id @default(cuid())
+  companyId  String
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  name       String
+  group      String?
+  unit       String?
+  openingQty Decimal  @default(0) @db.Decimal(18, 3)
+  closingQty Decimal  @default(0) @db.Decimal(18, 3)
+  rate       Decimal  @default(0) @db.Decimal(18, 2)
+  value      Decimal  @default(0) @db.Decimal(18, 2)
+  asOfDate   DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([companyId, name])
+  @@index([companyId, asOfDate])
+}

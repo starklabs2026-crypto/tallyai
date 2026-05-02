@@ -1,0 +1,31 @@
+# Next.js
+.next/
+out/
+build/
+
+# Node
+node_modules/
+.npm
+
+# Environment files (NEVER commit these)
+.env
+.env.local
+.env.production
+.env.development
+
+# Prisma
+prisma/migrations/
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Railway
+.railway/
