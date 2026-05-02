@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm run db:generate --workspace=apps/web && npm run build --workspace=apps/web"
+
+[deploy]
+startCommand = "npm run db:deploy --workspace=apps/web && npm run start --workspace=apps/web"
+healthcheckPath = "/api/health"
+restartPolicyType = "on-failure"

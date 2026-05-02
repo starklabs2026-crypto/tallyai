@@ -13,9 +13,6 @@ node_modules/
 .env.production
 .env.development
 
-# Prisma
-prisma/migrations/
-
 # TypeScript
 *.tsbuildinfo
 
