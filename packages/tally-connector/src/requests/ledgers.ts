@@ -14,14 +14,22 @@ const LEDGER_REQUEST = `<ENVELOPE>
   <HEADER>
     <VERSION>1</VERSION>
     <TALLYREQUEST>Export</TALLYREQUEST>
-    <TYPE>Data</TYPE>
-    <ID>List of Ledgers</ID>
+    <TYPE>Collection</TYPE>
+    <ID>Ledger</ID>
   </HEADER>
   <BODY>
     <DESC>
       <STATICVARIABLES>
         <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
       </STATICVARIABLES>
+      <TDL>
+        <TDLMESSAGE>
+          <COLLECTION ISMODIFY="No" ISFIXED="No" ISOPTION="No" ISINTERNAL="No" NAME="Ledger">
+            <TYPE>Ledger</TYPE>
+            <FETCH>Name, Parent, OpeningBalance, ClosingBalance</FETCH>
+          </COLLECTION>
+        </TDLMESSAGE>
+      </TDL>
     </DESC>
   </BODY>
 </ENVELOPE>`;
@@ -34,8 +42,11 @@ export async function fetchLedgers(tallyUrl?: string): Promise<LedgerData[]> {
   const envelope = parsed["ENVELOPE"] as Record<string, unknown> | undefined;
   const body = envelope?.["BODY"] as Record<string, unknown> | undefined;
   const data = body?.["DATA"] as Record<string, unknown> | undefined;
+  // Collection export returns COLLECTION wrapper; Data export returns TALLYMESSAGE
+  const collection = data?.["COLLECTION"] as Record<string, unknown> | undefined;
   const tallyMsg = data?.["TALLYMESSAGE"] as Record<string, unknown> | undefined;
   const ledgerList =
+    (collection?.["LEDGER"] as Record<string, unknown>[] | undefined) ??
     (tallyMsg?.["LEDGER"] as Record<string, unknown>[] | undefined) ?? [];
 
   const results: LedgerData[] = [];

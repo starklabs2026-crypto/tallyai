@@ -1,0 +1,149 @@
+<ENVELOPE>
+  <HEADER>
+    <TALLYREQUEST>Import Data</TALLYREQUEST>
+  </HEADER>
+  <BODY>
+    <IMPORTDATA>
+      <REQUESTDESC>
+        <REPORTNAME>Vouchers</REPORTNAME>
+      </REQUESTDESC>
+      <REQUESTDATA>
+        <TALLYMESSAGE xmlns:UDF="TallyUDF">
+
+          <!-- Sales Voucher 1 — Nov 1 2025 -->
+          <VOUCHER ACTION="Create" OBJVIEW="Accounting Voucher View">
+            <DATE>20251101</DATE>
+            <VOUCHERTYPENAME>Sales</VOUCHERTYPENAME>
+            <VOUCHERNUMBER>S-001</VOUCHERNUMBER>
+            <PARTYLEDGERNAME>Acme Corp</PARTYLEDGERNAME>
+            <NARRATION>Sale of goods - Invoice S-001</NARRATION>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Acme Corp</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
+              <AMOUNT>-59000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Sales Account</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>50000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>CGST</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>4500.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>SGST</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>4500.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+          </VOUCHER>
+
+          <!-- Sales Voucher 2 — Dec 15 2025 -->
+          <VOUCHER ACTION="Create" OBJVIEW="Accounting Voucher View">
+            <DATE>20251215</DATE>
+            <VOUCHERTYPENAME>Sales</VOUCHERTYPENAME>
+            <VOUCHERNUMBER>S-002</VOUCHERNUMBER>
+            <PARTYLEDGERNAME>TechMart Pvt Ltd</PARTYLEDGERNAME>
+            <NARRATION>Sale of goods - Invoice S-002</NARRATION>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>TechMart Pvt Ltd</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
+              <AMOUNT>-35400.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Sales Account</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>30000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>CGST</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>2700.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>SGST</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>2700.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+          </VOUCHER>
+
+          <!-- Receipt — Jan 15 2026 -->
+          <VOUCHER ACTION="Create" OBJVIEW="Accounting Voucher View">
+            <DATE>20260115</DATE>
+            <VOUCHERTYPENAME>Receipt</VOUCHERTYPENAME>
+            <VOUCHERNUMBER>R-001</VOUCHERNUMBER>
+            <PARTYLEDGERNAME>Acme Corp</PARTYLEDGERNAME>
+            <NARRATION>Receipt against Invoice S-001</NARRATION>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Bank Account</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
+              <AMOUNT>-59000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Acme Corp</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>59000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+          </VOUCHER>
+
+          <!-- Purchase — Dec 1 2025 -->
+          <VOUCHER ACTION="Create" OBJVIEW="Accounting Voucher View">
+            <DATE>20251201</DATE>
+            <VOUCHERTYPENAME>Purchase</VOUCHERTYPENAME>
+            <VOUCHERNUMBER>P-001</VOUCHERNUMBER>
+            <PARTYLEDGERNAME>Global Supplies Ltd</PARTYLEDGERNAME>
+            <NARRATION>Purchase of raw materials</NARRATION>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Purchase Account</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
+              <AMOUNT>-25000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Global Supplies Ltd</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>25000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+          </VOUCHER>
+
+          <!-- Payment - Rent — Feb 1 2026 -->
+          <VOUCHER ACTION="Create" OBJVIEW="Accounting Voucher View">
+            <DATE>20260201</DATE>
+            <VOUCHERTYPENAME>Payment</VOUCHERTYPENAME>
+            <VOUCHERNUMBER>PMT-001</VOUCHERNUMBER>
+            <NARRATION>Office rent February 2026</NARRATION>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Office Rent</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
+              <AMOUNT>-15000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Bank Account</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>15000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+          </VOUCHER>
+
+          <!-- Payment - Salary — Mar 1 2026 -->
+          <VOUCHER ACTION="Create" OBJVIEW="Accounting Voucher View">
+            <DATE>20260301</DATE>
+            <VOUCHERTYPENAME>Payment</VOUCHERTYPENAME>
+            <VOUCHERNUMBER>PMT-002</VOUCHERNUMBER>
+            <NARRATION>Salary March 2026</NARRATION>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Salary Expenses</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
+              <AMOUNT>-40000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+            <ALLLEDGERENTRIES.LIST>
+              <LEDGERNAME>Bank Account</LEDGERNAME>
+              <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+              <AMOUNT>40000.00</AMOUNT>
+            </ALLLEDGERENTRIES.LIST>
+          </VOUCHER>
+
+        </TALLYMESSAGE>
+      </REQUESTDATA>
+    </IMPORTDATA>
+  </BODY>
+</ENVELOPE>

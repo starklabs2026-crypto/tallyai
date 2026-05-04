@@ -26,14 +26,25 @@ const RECEIVABLES_REQUEST = `<ENVELOPE>
   <HEADER>
     <VERSION>1</VERSION>
     <TALLYREQUEST>Export</TALLYREQUEST>
-    <TYPE>Data</TYPE>
-    <ID>List of Outstanding Receivables</ID>
+    <TYPE>Collection</TYPE>
+    <ID>BillOutstanding</ID>
   </HEADER>
   <BODY>
     <DESC>
       <STATICVARIABLES>
         <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
       </STATICVARIABLES>
+      <TDL>
+        <TDLMESSAGE>
+          <COLLECTION ISMODIFY="No" ISFIXED="No" ISOPTION="No" ISINTERNAL="No" NAME="BillOutstanding">
+            <TYPE>LedgerVouchers</TYPE>
+            <BELONGSTO>Sundry Debtors</BELONGSTO>
+            <FETCH>Name, BillDate, Amount, PendingAmount, BillCreditPeriod, VoucherTypeName</FETCH>
+            <FILTER>IsOutstanding</FILTER>
+          </COLLECTION>
+          <SYSTEM TYPE="Formulae" NAME="IsOutstanding">$PendingAmount != 0</SYSTEM>
+        </TDLMESSAGE>
+      </TDL>
     </DESC>
   </BODY>
 </ENVELOPE>`;
@@ -42,14 +53,25 @@ const PAYABLES_REQUEST = `<ENVELOPE>
   <HEADER>
     <VERSION>1</VERSION>
     <TALLYREQUEST>Export</TALLYREQUEST>
-    <TYPE>Data</TYPE>
-    <ID>List of Outstanding Payables</ID>
+    <TYPE>Collection</TYPE>
+    <ID>BillOutstandingPayable</ID>
   </HEADER>
   <BODY>
     <DESC>
       <STATICVARIABLES>
         <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
       </STATICVARIABLES>
+      <TDL>
+        <TDLMESSAGE>
+          <COLLECTION ISMODIFY="No" ISFIXED="No" ISOPTION="No" ISINTERNAL="No" NAME="BillOutstandingPayable">
+            <TYPE>LedgerVouchers</TYPE>
+            <BELONGSTO>Sundry Creditors</BELONGSTO>
+            <FETCH>Name, BillDate, Amount, PendingAmount, BillCreditPeriod, VoucherTypeName</FETCH>
+            <FILTER>IsOutstanding</FILTER>
+          </COLLECTION>
+          <SYSTEM TYPE="Formulae" NAME="IsOutstanding">$PendingAmount != 0</SYSTEM>
+        </TDLMESSAGE>
+      </TDL>
     </DESC>
   </BODY>
 </ENVELOPE>`;

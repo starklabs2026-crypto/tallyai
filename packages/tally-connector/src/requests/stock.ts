@@ -16,14 +16,22 @@ const STOCK_REQUEST = `<ENVELOPE>
   <HEADER>
     <VERSION>1</VERSION>
     <TALLYREQUEST>Export</TALLYREQUEST>
-    <TYPE>Data</TYPE>
-    <ID>Stock Summary</ID>
+    <TYPE>Collection</TYPE>
+    <ID>StockItem</ID>
   </HEADER>
   <BODY>
     <DESC>
       <STATICVARIABLES>
         <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
       </STATICVARIABLES>
+      <TDL>
+        <TDLMESSAGE>
+          <COLLECTION ISMODIFY="No" ISFIXED="No" ISOPTION="No" ISINTERNAL="No" NAME="StockItem">
+            <TYPE>StockItem</TYPE>
+            <FETCH>Name, Parent, BaseUnits, OpeningBalance, ClosingBalance, ClosingRate, ClosingValue</FETCH>
+          </COLLECTION>
+        </TDLMESSAGE>
+      </TDL>
     </DESC>
   </BODY>
 </ENVELOPE>`;
@@ -36,8 +44,10 @@ export async function fetchStockItems(tallyUrl?: string): Promise<StockItemData[
   const envelope = parsed["ENVELOPE"] as Record<string, unknown> | undefined;
   const body = envelope?.["BODY"] as Record<string, unknown> | undefined;
   const data = body?.["DATA"] as Record<string, unknown> | undefined;
+  const collection = data?.["COLLECTION"] as Record<string, unknown> | undefined;
   const tallyMsg = data?.["TALLYMESSAGE"] as Record<string, unknown> | undefined;
   const stockList =
+    (collection?.["STOCKITEM"] as Record<string, unknown>[] | undefined) ??
     (tallyMsg?.["STOCKITEM"] as Record<string, unknown>[] | undefined) ?? [];
 
   const results: StockItemData[] = [];

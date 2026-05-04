@@ -1,0 +1,87 @@
+<ENVELOPE>
+  <HEADER>
+    <TALLYREQUEST>Import</TALLYREQUEST>
+  </HEADER>
+  <BODY>
+    <IMPORTDATA>
+      <REQUESTDESC>
+        <REPORTNAME>All Masters</REPORTNAME>
+      </REQUESTDESC>
+      <REQUESTDATA>
+        <TALLYMESSAGE xmlns:UDF="TallyUDF">
+
+          <!-- ===== LEDGERS ===== -->
+
+          <LEDGER NAME="Cash" RESERVEDNAME="">
+            <NAME>Cash</NAME>
+            <PARENT>Cash-in-Hand</PARENT>
+            <OPENINGBALANCE>50000.00 Dr</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="Bank Account" RESERVEDNAME="">
+            <NAME>Bank Account</NAME>
+            <PARENT>Bank Accounts</PARENT>
+            <OPENINGBALANCE>200000.00 Dr</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="Sales Account" RESERVEDNAME="">
+            <NAME>Sales Account</NAME>
+            <PARENT>Sales Accounts</PARENT>
+            <OPENINGBALANCE>0.00</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="Purchase Account" RESERVEDNAME="">
+            <NAME>Purchase Account</NAME>
+            <PARENT>Purchase Accounts</PARENT>
+            <OPENINGBALANCE>0.00</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="Acme Corp" RESERVEDNAME="">
+            <NAME>Acme Corp</NAME>
+            <PARENT>Sundry Debtors</PARENT>
+            <OPENINGBALANCE>75000.00 Dr</OPENINGBALANCE>
+            <ISCOSTCENTRESON>No</ISCOSTCENTRESON>
+            <CREDITLIMIT>100000.00</CREDITLIMIT>
+          </LEDGER>
+
+          <LEDGER NAME="Global Supplies Ltd" RESERVEDNAME="">
+            <NAME>Global Supplies Ltd</NAME>
+            <PARENT>Sundry Creditors</PARENT>
+            <OPENINGBALANCE>30000.00 Cr</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="TechMart Pvt Ltd" RESERVEDNAME="">
+            <NAME>TechMart Pvt Ltd</NAME>
+            <PARENT>Sundry Debtors</PARENT>
+            <OPENINGBALANCE>45000.00 Dr</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="Office Rent" RESERVEDNAME="">
+            <NAME>Office Rent</NAME>
+            <PARENT>Indirect Expenses</PARENT>
+            <OPENINGBALANCE>0.00</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="Salary Expenses" RESERVEDNAME="">
+            <NAME>Salary Expenses</NAME>
+            <PARENT>Indirect Expenses</PARENT>
+            <OPENINGBALANCE>0.00</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="CGST" RESERVEDNAME="">
+            <NAME>CGST</NAME>
+            <PARENT>Duties &amp; Taxes</PARENT>
+            <OPENINGBALANCE>0.00</OPENINGBALANCE>
+          </LEDGER>
+
+          <LEDGER NAME="SGST" RESERVEDNAME="">
+            <NAME>SGST</NAME>
+            <PARENT>Duties &amp; Taxes</PARENT>
+            <OPENINGBALANCE>0.00</OPENINGBALANCE>
+          </LEDGER>
+
+        </TALLYMESSAGE>
+      </REQUESTDATA>
+    </IMPORTDATA>
+  </BODY>
+</ENVELOPE>

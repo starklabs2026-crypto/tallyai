@@ -121,91 +121,117 @@ export default function ConnectorPage() {
 
       {/* Setup Instructions */}
       <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+        <h2 className="text-sm font-semibold text-slate-700 mb-1 flex items-center gap-2">
           <Terminal className="w-4 h-4 text-slate-500" />
           Setup Instructions
         </h2>
-        <ol className="space-y-4 text-sm text-slate-600">
+        <p className="text-xs text-slate-400 mb-5">
+          No credentials needed — the connector reads whichever company is currently open in Tally Prime.
+        </p>
+        <ol className="space-y-5 text-sm text-slate-600">
+
           <li className="flex gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">
-              1
-            </span>
+            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">1</span>
             <div>
-              <p className="font-medium text-slate-700">
-                Enable XML over HTTP in Tally Prime
-              </p>
+              <p className="font-medium text-slate-700">Open your company in Tally Prime</p>
               <p className="text-xs text-slate-500 mt-0.5">
-                Open Tally Prime → Press{" "}
-                <kbd className="px-1 py-0.5 bg-slate-100 rounded text-xs font-mono">
-                  F12
-                </kbd>{" "}
-                → Advanced Configuration → Enable{" "}
-                <strong>TallyPrime as XML Server</strong> → Set port to{" "}
-                <code className="bg-slate-100 px-1 rounded font-mono">9000</code>
+                Launch Tally Prime and load the company whose data you want to sync. The connector always reads the currently active company — no login credentials required.
               </p>
             </div>
           </li>
+
           <li className="flex gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">
-              2
-            </span>
+            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">2</span>
             <div>
-              <p className="font-medium text-slate-700">Download the connector</p>
+              <p className="font-medium text-slate-700">Enable the XML Server in Tally Prime</p>
               <p className="text-xs text-slate-500 mt-0.5">
-                Download the tally-connector package from the{" "}
-                <a href="#" className="text-blue-600 hover:underline">
-                  releases page
-                </a>
-                , or clone the monorepo and navigate to{" "}
-                <code className="bg-slate-100 px-1 rounded font-mono text-xs">
-                  packages/tally-connector
-                </code>
+                From the <strong>Gateway of Tally</strong> (main screen) → press{" "}
+                <kbd className="px-1 py-0.5 bg-slate-100 rounded text-xs font-mono">F12</kbd>
+                {" "}→ <strong>Client/Server configuration</strong> → set{" "}
+                <strong>"TallyPrime acts as"</strong> to <strong>Server</strong> → port{" "}
+                <code className="bg-slate-100 px-1 rounded font-mono">9000</code> → Accept → restart Tally.
               </p>
             </div>
           </li>
+
           <li className="flex gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">
-              3
-            </span>
+            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+            <div>
+              <p className="font-medium text-slate-700">Install Node.js on this PC</p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Download and install <strong>Node.js 18+</strong> from{" "}
+                <strong>nodejs.org</strong> if not already installed. Verify by running{" "}
+                <code className="bg-slate-100 px-1 rounded font-mono">node --version</code> in Command Prompt.
+              </p>
+            </div>
+          </li>
+
+          <li className="flex gap-3">
+            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">4</span>
+            <div>
+              <p className="font-medium text-slate-700">Clone the repository and install dependencies</p>
+              <p className="text-xs text-slate-500 mt-1 mb-1">Run these commands from <strong>Command Prompt</strong> or <strong>PowerShell</strong>:</p>
+              <div className="bg-slate-900 text-slate-100 rounded-lg p-3 text-xs font-mono space-y-1">
+                <p className="text-slate-400"># Clone the repo</p>
+                <p>git clone https://github.com/starklabs2026-crypto/tallyai.git</p>
+                <p className="mt-2 text-slate-400"># Go to the repo ROOT (important — not inside the connector folder)</p>
+                <p>cd tallyai</p>
+                <p className="mt-2 text-slate-400"># Install all dependencies</p>
+                <p>npm install</p>
+              </div>
+            </div>
+          </li>
+
+          <li className="flex gap-3">
+            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">5</span>
             <div>
               <p className="font-medium text-slate-700">Configure the .env file</p>
-              <div className="mt-1 bg-slate-900 text-slate-100 rounded-lg p-3 text-xs font-mono">
-                <p className="text-slate-400"># .env</p>
+              <p className="text-xs text-slate-500 mt-1 mb-1">
+                Inside the repo, go to{" "}
+                <code className="bg-slate-100 px-1 rounded font-mono">packages/tally-connector</code>,
+                copy <code className="bg-slate-100 px-1 rounded font-mono">.env.example</code> to{" "}
+                <code className="bg-slate-100 px-1 rounded font-mono">.env</code>, and fill in:
+              </p>
+              <div className="bg-slate-900 text-slate-100 rounded-lg p-3 text-xs font-mono space-y-0.5">
+                <p className="text-slate-400"># packages/tally-connector/.env</p>
                 <p>
-                  PLATFORM_URL=
-                  <span className="text-green-400">
+                  PLATFORM_URL=<span className="text-green-400">
                     {typeof window !== "undefined" ? window.location.origin : "https://your-app.railway.app"}
                   </span>
                 </p>
                 <p>
-                  SYNC_TOKEN=
-                  <span className="text-yellow-400">
-                    {showToken ? token : "your-sync-token-from-above"}
+                  SYNC_TOKEN=<span className="text-yellow-400">
+                    {showToken ? token : "paste-your-sync-token-from-above"}
                   </span>
                 </p>
                 <p>
-                  SYNC_INTERVAL_MINUTES=
-                  <span className="text-blue-400">15</span>
+                  SYNC_INTERVAL_MINUTES=<span className="text-blue-400">15</span>
+                </p>
+                <p>
+                  TALLY_URL=<span className="text-slate-300">http://localhost:9000</span>
                 </p>
               </div>
             </div>
           </li>
+
           <li className="flex gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">
-              4
-            </span>
+            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">6</span>
             <div>
               <p className="font-medium text-slate-700">Start the connector</p>
-              <div className="mt-1 bg-slate-900 text-slate-100 rounded-lg p-3 text-xs font-mono">
-                <p className="text-slate-400"># Install dependencies</p>
-                <p>npm install</p>
-                <p className="mt-1 text-slate-400"># Start (with hot-reload)</p>
-                <p>npm start</p>
-                <p className="mt-1 text-slate-400"># Or build and run</p>
-                <p>npm run build && npm run start:prod</p>
+              <p className="text-xs text-slate-500 mt-1 mb-1">
+                Run this from the <strong>repo root</strong> (the <code className="bg-slate-100 px-1 rounded font-mono">tallyai</code> folder):
+              </p>
+              <div className="bg-slate-900 text-slate-100 rounded-lg p-3 text-xs font-mono space-y-1">
+                <p className="text-slate-400"># Run from the tallyai/ repo root</p>
+                <p>npm run start --workspace=packages/tally-connector</p>
               </div>
+              <p className="text-xs text-slate-500 mt-2">
+                Keep this terminal open. The connector syncs every 15 minutes automatically. To stop it, press{" "}
+                <kbd className="px-1 py-0.5 bg-slate-100 rounded text-xs font-mono">Ctrl+C</kbd>.
+              </p>
             </div>
           </li>
+
         </ol>
       </div>
 
