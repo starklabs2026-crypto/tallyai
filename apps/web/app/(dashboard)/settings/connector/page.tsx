@@ -148,7 +148,7 @@ export default function ConnectorPage() {
                 From the <strong>Gateway of Tally</strong> (main screen) → press{" "}
                 <kbd className="px-1 py-0.5 bg-slate-100 rounded text-xs font-mono">F12</kbd>
                 {" "}→ <strong>Client/Server configuration</strong> → set{" "}
-                <strong>"TallyPrime acts as"</strong> to <strong>Server</strong> → port{" "}
+                <strong>&quot;TallyPrime acts as&quot;</strong> to <strong>Server</strong> → port{" "}
                 <code className="bg-slate-100 px-1 rounded font-mono">9000</code> → Accept → restart Tally.
               </p>
             </div>
