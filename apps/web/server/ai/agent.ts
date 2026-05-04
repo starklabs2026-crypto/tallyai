@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { getDebtorAging } from "./tools/getDebtorAging";
 import { getPayables } from "./tools/getPayables";
 import { getSalesReport } from "./tools/getSalesReport";
@@ -7,108 +7,130 @@ import { getLedgerBalance } from "./tools/getLedgerBalance";
 import { getKpiSummary } from "./tools/getKpiSummary";
 import { getCashFlow } from "./tools/getCashFlow";
 
-const tools: Anthropic.Tool[] = [
+const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
   {
-    name: "get_debtor_aging",
-    description:
-      "Get party-wise debtor aging report — who owes money to the company and for how long. Returns buckets: 0-30, 31-60, 61-90, 91+ days.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        asOfDate: {
-          type: "string",
-          description: "ISO date string (YYYY-MM-DD). Defaults to today.",
+    type: "function",
+    function: {
+      name: "get_debtor_aging",
+      description:
+        "Get party-wise debtor aging report — who owes money to the company and for how long. Returns buckets: 0-30, 31-60, 61-90, 91+ days.",
+      parameters: {
+        type: "object",
+        properties: {
+          asOfDate: {
+            type: "string",
+            description: "ISO date string (YYYY-MM-DD). Defaults to today.",
+          },
         },
       },
     },
   },
   {
-    name: "get_payables",
-    description:
-      "Get what the company owes to vendors and creditors, with aging buckets and overdue flags.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        asOfDate: {
-          type: "string",
-          description: "ISO date string (YYYY-MM-DD). Defaults to today.",
+    type: "function",
+    function: {
+      name: "get_payables",
+      description:
+        "Get what the company owes to vendors and creditors, with aging buckets and overdue flags.",
+      parameters: {
+        type: "object",
+        properties: {
+          asOfDate: {
+            type: "string",
+            description: "ISO date string (YYYY-MM-DD). Defaults to today.",
+          },
         },
       },
     },
   },
   {
-    name: "get_sales_report",
-    description: "Get sales data for a date range — total sales, top transactions, growth vs last month.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        fromDate: {
-          type: "string",
-          description: "Start date (YYYY-MM-DD). Defaults to start of current month.",
-        },
-        toDate: {
-          type: "string",
-          description: "End date (YYYY-MM-DD). Defaults to end of current month.",
-        },
-      },
-    },
-  },
-  {
-    name: "get_profit_loss",
-    description:
-      "Get income, expenses, gross profit, net profit, and profit margin.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        fromDate: {
-          type: "string",
-          description: "Start date (YYYY-MM-DD). Defaults to start of current month.",
-        },
-        toDate: {
-          type: "string",
-          description: "End date (YYYY-MM-DD). Defaults to end of current month.",
+    type: "function",
+    function: {
+      name: "get_sales_report",
+      description:
+        "Get sales data for a date range — total sales, top transactions, growth vs last month.",
+      parameters: {
+        type: "object",
+        properties: {
+          fromDate: {
+            type: "string",
+            description: "Start date (YYYY-MM-DD). Defaults to start of current month.",
+          },
+          toDate: {
+            type: "string",
+            description: "End date (YYYY-MM-DD). Defaults to end of current month.",
+          },
         },
       },
     },
   },
   {
-    name: "get_kpi_summary",
-    description:
-      "Get a quick snapshot of all key business metrics: receivables, payables, monthly sales, cash balance, top debtors, sync status.",
-    input_schema: {
-      type: "object" as const,
-      properties: {},
-    },
-  },
-  {
-    name: "get_ledger_balance",
-    description:
-      "Get the closing balance of a specific ledger account by name (supports partial/fuzzy match).",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        ledgerName: {
-          type: "string",
-          description: "Name or partial name of the ledger account.",
+    type: "function",
+    function: {
+      name: "get_profit_loss",
+      description:
+        "Get income, expenses, gross profit, net profit, and profit margin.",
+      parameters: {
+        type: "object",
+        properties: {
+          fromDate: {
+            type: "string",
+            description: "Start date (YYYY-MM-DD). Defaults to start of current month.",
+          },
+          toDate: {
+            type: "string",
+            description: "End date (YYYY-MM-DD). Defaults to end of current month.",
+          },
         },
       },
-      required: ["ledgerName"],
     },
   },
   {
-    name: "get_cash_flow",
-    description:
-      "Get daily cash inflow and outflow (receipts and payments) for a period.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        fromDate: {
-          type: "string",
-          description: "Start date (YYYY-MM-DD). Defaults to start of current month.",
+    type: "function",
+    function: {
+      name: "get_kpi_summary",
+      description:
+        "Get a quick snapshot of all key business metrics: receivables, payables, monthly sales, cash balance, top debtors, sync status.",
+      parameters: {
+        type: "object",
+        properties: {},
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "get_ledger_balance",
+      description:
+        "Get the closing balance of a specific ledger account by name (supports partial/fuzzy match).",
+      parameters: {
+        type: "object",
+        properties: {
+          ledgerName: {
+            type: "string",
+            description: "Name or partial name of the ledger account.",
+          },
         },
-        toDate: {
-          type: "string",
-          description: "End date (YYYY-MM-DD). Defaults to end of current month.",
+        required: ["ledgerName"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "get_cash_flow",
+      description:
+        "Get daily cash inflow and outflow (receipts and payments) for a period.",
+      parameters: {
+        type: "object",
+        properties: {
+          fromDate: {
+            type: "string",
+            description: "Start date (YYYY-MM-DD). Defaults to start of current month.",
+          },
+          toDate: {
+            type: "string",
+            description: "End date (YYYY-MM-DD). Defaults to end of current month.",
+          },
         },
       },
     },
@@ -185,7 +207,8 @@ export async function* runAgentStream(
   companyName: string,
   lastSyncAt: Date | null
 ): AsyncGenerator<string> {
-  const client = new Anthropic();
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
   const today = new Date().toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "long",
@@ -203,58 +226,61 @@ Format currency in Indian Rupee format using ₹ symbol with lakhs and crores no
 Be helpful, professional, and insightful — go beyond just stating numbers by providing brief interpretation.
 Current date: ${today}. ${syncInfo}`;
 
-  const anthropicMessages: Anthropic.MessageParam[] = messages.map((m) => ({
-    role: m.role,
-    content: m.content,
-  }));
+  const currentMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+    { role: "system", content: systemPrompt },
+    ...messages.map((m) => ({ role: m.role, content: m.content } as OpenAI.Chat.Completions.ChatCompletionMessageParam)),
+  ];
 
-  const currentMessages = [...anthropicMessages];
   const MAX_ITERATIONS = 10;
   let iterations = 0;
 
   while (iterations < MAX_ITERATIONS) {
     iterations++;
 
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+    const response = await client.chat.completions.create({
+      model: "gpt-4o",
       max_tokens: 4096,
-      system: systemPrompt,
       tools,
       messages: currentMessages,
     });
 
-    // Yield text blocks
-    for (const block of response.content) {
-      if (block.type === "text" && block.text) {
-        yield block.text;
-      }
+    const choice = response.choices[0];
+    if (!choice) break;
+
+    const assistantMessage = choice.message;
+    currentMessages.push(assistantMessage);
+
+    // Yield text content
+    if (assistantMessage.content) {
+      yield assistantMessage.content;
     }
 
-    if (response.stop_reason !== "tool_use") break;
-
-    // Signal tool use to frontend and execute
-    const toolResults: Anthropic.ToolResultBlockParam[] = [];
-
-    for (const block of response.content) {
-      if (block.type === "tool_use") {
-        // Signal which tool is being used
-        yield `\x00TOOL_USE\x00${block.name}\x00`;
-
-        const result = await executeTool(
-          block.name,
-          block.input as ToolInput,
-          companyId
-        );
-
-        toolResults.push({
-          type: "tool_result",
-          tool_use_id: block.id,
-          content: result,
-        });
-      }
+    if (choice.finish_reason !== "tool_calls" || !assistantMessage.tool_calls?.length) {
+      break;
     }
 
-    currentMessages.push({ role: "assistant", content: response.content });
-    currentMessages.push({ role: "user", content: toolResults });
+    // Execute tool calls and collect results
+    const toolMessages: OpenAI.Chat.Completions.ChatCompletionToolMessageParam[] = [];
+
+    for (const toolCall of assistantMessage.tool_calls) {
+      yield `\x00TOOL_USE\x00${toolCall.function.name}\x00`;
+
+      let input: ToolInput = {};
+      try {
+        input = JSON.parse(toolCall.function.arguments) as ToolInput;
+      } catch {
+        // ignore parse error, use empty input
+      }
+
+      const result = await executeTool(toolCall.function.name, input, companyId);
+
+      toolMessages.push({
+        role: "tool",
+        tool_call_id: toolCall.id,
+        content: result,
+      });
+    }
+
+    currentMessages.push(...toolMessages);
   }
 }
